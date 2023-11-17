@@ -16,9 +16,22 @@ jobs:
           java-version: 17
           distribution: adopt
 
+      - name: Gradle cache
+        uses: gradle/gradle-build-action@v2
+
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-30
+
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          arch: x86_64
-          api-level: 33
+          target: aosp_atd
+          arch: x86
+          api-level: 30
           script: ./gradlew :macrobenchmark:connectedBenchmarkAndroidTest
